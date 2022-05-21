@@ -2,6 +2,11 @@ const express = require('express');
 
 const app = express();
 
+// routers
+const customersRouter = require('./routes/customers.router');
+
+app.use('/customers', customersRouter);
+
 // test api
 app.get('/', (req, res) => {
   res.status(200).json({
