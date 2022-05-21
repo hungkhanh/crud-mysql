@@ -24,4 +24,6 @@ router.patch(
 );
 router.delete('/:employeeNumber', employeesController.deleteOneEmployee);
 
+router.post('/addCustomers', employeesController.addCustomers);
+
 module.exports = router;

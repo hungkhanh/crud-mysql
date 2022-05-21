@@ -1,4 +1,5 @@
 const employeesService = require('../services/employees.service');
+const customersService = require('../services/customers.service');
 
 const getAllEmployees = async (req, res) => {
   try {
@@ -157,6 +158,28 @@ const deleteOneEmployee = async (req, res) => {
   }
 };
 
+// Advance
+const addCustomers = async (req, res) => {
+  try {
+    const employeeData = req.body.employee;
+    const customersData = req.body.customers;
+
+    const employee = await employeesService.create(employeeData);
+    const employeeId = employee.employeeNumber;
+
+    for (let i = 0; i < customersData.length; ++i) {
+      customersData[i].salesRepEmployeeNumber = employeeId;
+      await customersService.create(customersData[i]);
+    }
+  } catch (error) {
+    return res.status(500).json({
+      statusCode: 500,
+      success: false,
+      message: `${error}`,
+    });
+  }
+};
+
 module.exports = {
   getAllEmployees,
   createEmployee,
@@ -166,4 +189,6 @@ module.exports = {
   updateOrCreateEmployee,
   updateEmployee,
   deleteOneEmployee,
+
+  addCustomers,
 };
