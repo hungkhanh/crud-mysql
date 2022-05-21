@@ -4,8 +4,10 @@ const app = express();
 
 // routers
 const customersRouter = require('./routes/customers.router');
+const employeesRouter = require('./routes/employees.router');
 
 app.use('/customers', customersRouter);
+app.use('/employees', employeesRouter);
 
 // test api
 app.get('/', (req, res) => {
