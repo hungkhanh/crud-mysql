@@ -1,13 +1,27 @@
 const router = require('express').Router();
+const celebrate = require('celebrate');
 const employeesController = require('../controllers/employees.controller');
+const employeesSchema = require('../utils/validation/employees.validation');
 
 router.get('/', employeesController.getAllEmployees);
-router.post('/', employeesController.createEmployee);
+router.post(
+  '/',
+  celebrate({body: employeesSchema}),
+  employeesController.createEmployee,
+);
 router.delete('/', employeesController.deleteAllEmployees);
 
 router.get('/:employeeNumber', employeesController.getOneEmployee);
-router.put('/:employeeNumber', employeesController.updateOrCreateEmployee);
-router.patch('/:employeeNumber', employeesController.updateEmployee);
+router.put(
+  '/:employeeNumber',
+  celebrate({body: employeesSchema}),
+  employeesController.updateOrCreateEmployee,
+);
+router.patch(
+  '/:employeeNumber',
+  celebrate({body: employeesSchema}),
+  employeesController.updateEmployee,
+);
 router.delete('/:employeeNumber', employeesController.deleteOneEmployee);
 
 module.exports = router;
