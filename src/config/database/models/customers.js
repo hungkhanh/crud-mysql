@@ -9,9 +9,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       customerNumber: {
         primaryKey: true,
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
-      customerName: DataTypes.STRING,
+      customerName: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
       contactLastName: DataTypes.STRING,
       contactFirstName: DataTypes.STRING,
       phone: DataTypes.STRING,

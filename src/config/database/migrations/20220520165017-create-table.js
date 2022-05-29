@@ -72,7 +72,9 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       customerName: {
+        allowNull: false,
         type: Sequelize.STRING,
+        defaultValue: 'default',
       },
       contactLastName: {
         type: Sequelize.STRING,
@@ -204,8 +206,8 @@ module.exports = {
         type: Sequelize.REAL,
       },
       orderLineNumber: {
-        type: Sequelize.INTEGER
-      }
+        type: Sequelize.INTEGER,
+      },
     });
   },
 

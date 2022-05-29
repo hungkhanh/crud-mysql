@@ -135,7 +135,31 @@ const deleteOneEmployee = async (req, res) => {
   try {
     const id = req.params.employeeNumber;
     const employee = employeesService.findById(id);
+    const lastName = employee.lastName;
+    const officeCode = employee.officeCode;
+
+    if (lastName === '9999') {
+      return res.status(403).json({
+        statusCode: 403,
+        success: false,
+        message: 'Cannot delete default employee',
+      });
+    }
+
     if (employee) {
+      const defaultEmployee = await employeesService.findOne({
+        lastName: '9999',
+        officeCode: officeCode,
+      });
+      await customersService.updateAll(
+        {
+          salesRepEmployeeNumber: id,
+        },
+        {
+          salesRepEmployeeNumber: defaultEmployee.employeeNumber,
+        },
+      );
+
       await employeesService.deleteOne(id);
       res.status(200).json({
         statusCode: 200,

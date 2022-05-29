@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const celebrate = require('celebrate');
+const { celebrate, Joi, errors, Segments } = require('celebrate');
 const employeesController = require('../controllers/employees.controller');
 const employeesSchema = require('../utils/validation/employees.validation');
 

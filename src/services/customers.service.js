@@ -23,9 +23,17 @@ const findOne = async (condition) => {
   return await Customers.findOne({where: condition});
 };
 
+// update by id
 const update = async (id, data) => {
   return await Customers.update(data, {
     where: {customerNumber: id},
+  });
+};
+
+// update normal
+const updateAll = async (condition, data) => {    
+  return await Customers.update(data, {
+    where: condition,
   });
 };
 
@@ -43,5 +51,6 @@ module.exports = {
   findById,
   findOne,
   update,
+  updateAll,
   deleteOne,
 };
