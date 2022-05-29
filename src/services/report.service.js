@@ -1,9 +1,9 @@
-const { QueryTypes } = require('sequelize');
-const  db  = require('../config/database/models');
+const {QueryTypes} = require('sequelize');
+const db = require('../config/database/models');
 
 const salesInfo = async (startDate, endDate) => {
-  const [results, metadata] = await db.sequelize.
-  query(`
+  const [results, metadata] = await db.sequelize.query(
+    `
     SELECT products.productName AS name , o.sum AS total price
     FROM products
     LEFT JOIN
@@ -17,17 +17,16 @@ const salesInfo = async (startDate, endDate) => {
       ) AS o
     ON products.productCode = o.code`,
     {
-      replacements: { startDate: startDate, endDate: endDate },
-      type: QueryTypes.SELECT
-    }
+      replacements: {startDate: startDate, endDate: endDate},
+      type: QueryTypes.SELECT,
+    },
   );
   return results;
-}
-
+};
 
 const customersInfo = async (employeeId, startDate, endDate) => {
-  const [results, metadata] = await db.sequelize.
-  query(`
+  const [results, metadata] = await db.sequelize.query(
+    `
     SELECT co.id, co.name, SUM(p.sum)
     FROM
     (
@@ -44,20 +43,26 @@ const customersInfo = async (employeeId, startDate, endDate) => {
         SELECT customers.customerNumber AS id, customers.customerName AS name
         FROM customers
         WHERE customers.salesRepEmployeeNumber = :employeeId
+        AND customers.createAt >= :startDate
+        AND customers.createAt <= :endDate
       ) AS c
       ON orders.customerNumber = c.id
     ) AS co
     ON p.order_number = co.order_number
     GROUP BY co.id`,
     {
-      replacements: { employeeId:employeeId, startDate: startDate, endDate: endDate },
-      type: QueryTypes.SELECT
-    }
+      replacements: {
+        employeeId: employeeId,
+        startDate: startDate,
+        endDate: endDate,
+      },
+      type: QueryTypes.SELECT,
+    },
   );
   return results;
-}
+};
 
 module.exports = {
   salesInfo,
-  customersInfo
-}
+  customersInfo,
+};
